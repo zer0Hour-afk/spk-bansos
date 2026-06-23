@@ -4,6 +4,7 @@ use App\Http\Controllers\KriteriaController;
 use App\Http\Controllers\PenilaianController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TopsisController;
+use App\Http\Controllers\UserManagementController;
 use App\Http\Controllers\WargaController;
 use App\Http\Middleware\CheckRole;
 use App\Models\Kriteria;
@@ -31,6 +32,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::resource('warga', WargaController::class)->except(['show']);
         Route::resource('kriteria', KriteriaController::class)->except(['show']);
         Route::resource('penilaian', PenilaianController::class)->only(['index', 'store']);
+        
+        // User Management Routes
+        Route::get('/users', [UserManagementController::class, 'index'])->name('users.index');
+        Route::get('/users/{user}', [UserManagementController::class, 'show'])->name('users.show');
+        Route::get('/users/{user}/edit-role', [UserManagementController::class, 'editRole'])->name('users.editRole');
+        Route::patch('/users/{user}/role', [UserManagementController::class, 'updateRole'])->name('users.updateRole');
     });
 
     Route::get('/topsis', [TopsisController::class, 'index'])->name('topsis.index');
